@@ -1,0 +1,152 @@
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.*" %>
+
+<% 
+        if(request.getParameter("submit")!=null)
+        {
+            String ClassLevel = request.getParameter("Class Level");
+            String Subject = request.getParameter("Subject");
+            String Topic = request.getParameter("Topic");
+            String No = request.getParameter("No");
+            String Note = request.getParameter("Note");
+            
+            Connection con;
+            PreparedStatement pst;
+            ResultSet rs;
+
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/assign?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","");
+            pst = con.prepareStatement("insert into assignfac(`Class Level`,`Subject`,`Topic`,`No`,`Note`)values(?,?,?,?,?)");
+            pst.setString(1, ClassLevel);
+            pst.setString(2, Subject);
+            pst.setString(3, Topic);
+            pst.setString(4, No);
+            pst.setString(5, Note);
+            pst.executeUpdate();
+            
+%>
+            
+            <script>
+                alert("Record Adddddeddddd");
+            </script>
+            
+            <%
+            }
+%>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <h1>Assignments Management using-JSP</h1>
+        </br>
+        <div class="row">
+            <div class="col-sm-4">
+                 <form  method="POST" action="#">
+                    
+                     <div alight="left">
+                         <label class="form-label">Class Level </label>
+                         <input type="text" class="form-control" placeholder="Class Level" name="Class Level" id="Class Level" required >
+                     </div>   
+                     
+                      <div alight="left">
+                         <label class="form-label">Subject </label>
+                         <input type="text" class="form-control" placeholder="Subject" name="Subject" id="Subject" required >
+                     </div>   
+                     
+                     <div alight="left">
+                         <label class="form-label">Topic</label>
+                         <input type="text" class="form-control" placeholder="Topic" name="Topic" id="Topic" required >
+                     </div>   
+                     
+                      <div alight="left">
+                         <label class="form-label">No</label>
+                         <input type="text" class="form-control" placeholder="No" name="No" id="No" required >
+                     </div> 
+                     
+                      <div alight="left">
+                         <label class="form-label">Note</label>
+                         <input type="text" class="form-control" placeholder="Note" name="Note" id="Note" required >
+                     </div>   
+                     </br>
+                       <div alight="right">
+                         <input type="submit" id="submit" value="submit" name="submit" class="btn btn-info">
+                         <input type="reset" id="reset" value="reset" name="reset" class="btn btn-Warning">
+                     </div>   
+                     
+                </form>
+                 
+        </div>
+            <div class="col-sm-8">
+                
+                <div class="panel-body">
+                    <table id="tbl-coursef" class="table table-responsive table-bordered" cellpadding ="0"width="100%">
+                        <thead>
+                            <tr>
+                                <th>Class Level</th>
+                                <th>Subject</th>
+                                <th>Topic</th>
+                                <th>No</th>
+                                <th>Note</th>
+                                <th>Edit</th>
+                                <th>Save</th>
+                               <th>Delete</th>
+                               <th>Report</th>
+                                <th></th>
+                                
+                            </tr>
+                             
+                         <%
+                                     Connection con;
+                                     PreparedStatement pst;
+                                     ResultSet rs;
+
+            
+                                     Class.forName("com.mysql.jdbc.Driver");
+                                     con = DriverManager.getConnection("jdbc:mysql://localhost/assign?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","");
+                                     
+                                     String query = "select * from assignfac";
+                                     Statement st = con.createStatement();
+                                    
+                                     rs = st.executeQuery(query);
+            
+                                        while(rs.next())
+                                        {
+                                            String no = rs.getString("No");
+    
+                                        
+                                    
+                                %>
+                                <tr>
+                                    <td><%=rs.getString("Class Level") %></td>
+                                    <td><%=rs.getString("Subject") %></td>
+                                    <td><%=rs.getString("Topic") %></td>
+                                    <td><%=rs.getString("No") %></td>
+                                    <td><%=rs.getString("Note") %></td>
+                                    <td><a href="Edit.jsp?No=<%=no%>">Edit</a></td>
+                                    <td><a href="Save.jsp?No=<%=no%>">Save</a></td>
+                                     <td><a href="Report.jsp?No=<%=no%>">Report</a></td>
+                                    <td><a href="Delete.jsp?No=<%=no%>">Delete</a></td>
+                               </tr>    
+                                    
+                                    
+                               
+                                   <% 
+                                      }
+                                    %>
+                                    
+                        </thead>
+                    </table>
+                
+                
+     </body>
+</html>

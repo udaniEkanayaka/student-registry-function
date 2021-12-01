@@ -1,0 +1,124 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.*" %>
+
+
+<% 
+        if(request.getParameter("submit")!=null)
+        {
+            String ClassLevel = request.getParameter("Class Level");
+            String Subject = request.getParameter("Subject");
+            String Topic = request.getParameter("Topic");
+            String No = request.getParameter("No");
+            String Note = request.getParameter("Note");
+            
+            Connection con;
+            PreparedStatement pst;
+            ResultSet rs;
+
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/assign?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","");
+            pst = con.prepareStatement("Edit assignfac('Class Level',`Subject',`Topic`,`No`,`Note`)");
+            pst.setString(1, ClassLevel);
+            pst.setString(2, Subject);
+            pst.setString(3, Topic);
+            pst.setString(4, No);
+            pst.setString(5, Note);
+            pst.executeUpdate();
+            
+%>
+            
+            <script>
+                alert("Record Editeee");
+            </script>
+            
+            <%
+            }
+%>
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <h1>Edit assignment </h1>
+        
+
+
+
+
+
+<div class="row">
+            <div class="col-sm-4">
+                 <form  method="POST" action="#">
+                     <%
+                         
+                         Connection con;
+                         PreparedStatement pst;
+                         ResultSet rs;
+
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/assign?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root",""); 
+             
+                         
+                 String No  =request.getParameter("No");
+                 pst = con.prepareStatement("select *from assignfac where No = ?");
+                 pst.setString(1, No);
+                 rs = pst.executeQuery();
+                 
+while(rs.next())
+{
+    
+
+                 
+                         %>
+                    
+                     <div alight="left">
+                         <label class="form-label">Class Level </label>
+                         <input type="text" class="form-control" placeholder="Class Level" name="Class Level" value="<%= rs.getString("Class Level")%>" id="ClassLevel" required >
+                     </div>   
+                     
+                      <div alight="left">
+                         <label class="form-label">Subject</label>
+                         <input type="text" class="form-control" placeholder="Subject" name="Subject" value="<%= rs.getString("subject")%>" id="Subject" required >
+                     </div>   
+                     
+                     <div alight="left">
+                         <label class="form-label">Topic</label>
+                         <input type="text" class="form-control" placeholder="Topic" name="Topic" value="<%= rs.getString("topic")%>" id="Topic" required >
+                     </div>   
+                     
+                      <div alight="left">
+                         <label class="form-label">No</label>
+                         <input type="text" class="form-control" placeholder="No" name="No" value="<%= rs.getString("no")%>" id="No" required >
+                     </div> 
+                     
+                      <div alight="left">
+                         <label class="form-label">Note</label>
+                         <input type="text" class="form-control" placeholder="Note" name="Note" value="<%= rs.getString("note")%>" id="Note" required >
+                     </div>
+                         <% } %>
+                         
+                         
+                     </br>
+                    
+                       <div alight="right">
+                         <input type="submit" id="submit" value="submit" name="submit" class="btn btn-info">
+                         <input type="reset" id="reset" value="reset" name="reset" class="btn btn-Warning">
+                     </div>   
+
+                 </form>
+            </div>
+</div>
+    </body>
+</html>

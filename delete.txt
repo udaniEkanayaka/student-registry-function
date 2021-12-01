@@ -1,0 +1,27 @@
+<%@page import="java.sql.*" %>
+
+<% 
+        
+            
+            String No = request.getParameter("No");
+            
+            Connection con;
+            PreparedStatement pst;
+            ResultSet rs;
+
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/assign?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC","root","");
+            pst = con.prepareStatement("Delete from  assignfac where No =?");
+           
+            pst.setString(1,No);
+           
+            pst.executeUpdate();
+            
+%>
+            
+            <script>
+                alert("Record Deleteeee");
+            </script>
+            
+           
